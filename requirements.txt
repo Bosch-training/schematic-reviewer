@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+pydantic
+pymupdf==1.26.4
+openpyxl

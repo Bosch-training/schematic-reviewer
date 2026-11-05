@@ -1,0 +1,12 @@
+services:
+  app:
+    # Public image; the packaged source is mounted instead of building our own image.
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    # Placeholder until api.main exposes a FastAPI `app`; then use uvicorn api.main:app.
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && python -m http.server 8000"
+    restart: unless-stopped
