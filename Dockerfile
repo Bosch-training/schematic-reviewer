@@ -9,5 +9,5 @@ COPY . .
 
 EXPOSE 8000
 
-# Placeholder until api.main exposes a FastAPI `app`; then use uvicorn api.main:app.
-CMD ["python", "-m", "http.server", "8000"]
+# Serves the static page; switch to uvicorn api.main:app once api.main exposes a FastAPI `app`.
+CMD ["python", "-m", "http.server", "8000", "--directory", "frontend/web"]

@@ -1,0 +1,81 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+  color: #ffe9b0;
+  background: radial-gradient(circle at 50% 40%, #4a1d6e, #140826 70%);
+  text-align: center;
+}
+
+main {
+  padding: 1rem;
+}
+
+.diya {
+  font-size: 5rem;
+  animation: flicker 1.6s infinite alternate;
+}
+
+h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: #ffc83d;
+  text-shadow: 0 0 18px rgba(255, 200, 61, 0.7);
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.7rem 1.6rem;
+  font-size: 1rem;
+  color: #3b1a00;
+  background: #ffc83d;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ffd96b;
+}
+
+.spark {
+  position: fixed;
+  top: -20px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: #ffc83d;
+  box-shadow: 0 0 10px #ffc83d;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+
+@keyframes flicker {
+  from {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px #ff9f1c);
+  }
+  to {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 28px #ffc83d);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diya,
+  .spark {
+    animation: none;
+  }
+}
