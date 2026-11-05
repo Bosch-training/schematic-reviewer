@@ -327,12 +327,12 @@ def test_schematic_pdfs_blocks_inside_documented_rects(
 def test_build_original_pdf_annotation_points(tmp_path):
     """Covers ST-04-UT-012."""
     with fitz.open(build_original_pdf(tmp_path / "original.pdf")) as doc:
-        annots = [annot for page in doc for annot in page.annots()]
-    assert len(annots) == 5
-    for k, annot in enumerate(annots):
-        rect = annot.rect
-        assert rect.x0 <= 500 <= rect.x1
-        assert rect.y0 <= 60 + 30 * k <= rect.y1
+        rects = [annot.rect for page in doc for annot in page.annots()]
+    assert len(rects) == 5
+    for k, rect in enumerate(rects):
+        # PyMuPDF offsets the icon rect by 1 pt from the requested point.
+        assert rect.x0 - 1 <= 500 <= rect.x1
+        assert rect.y0 - 1 <= 60 + 30 * k <= rect.y1
 
 
 @pytest.mark.parametrize(
@@ -710,6 +710,7 @@ def test_build_password_protected_pdf_content_equals_modified(tmp_path):
 def test_build_password_protected_pdf_uses_aes_256(tmp_path):
     """Covers ST-04-UT-055."""
     with fitz.open(build_password_protected_pdf(tmp_path / "password.pdf")) as doc:
+        assert doc.authenticate(PDF_USER_PASSWORD) != 0
         encryption = doc.metadata["encryption"]
     assert "AES" in encryption
     assert "256" in encryption

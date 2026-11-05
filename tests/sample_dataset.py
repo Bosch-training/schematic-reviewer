@@ -1,8 +1,10 @@
 """Sanitized sample dataset builders and expected-outcome manifest (ST-04)."""
 
 from dataclasses import dataclass, replace
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import fitz
 import openpyxl
@@ -133,6 +135,16 @@ EBOM_MISSING_COLUMN: str = "Quantity"
 _FIXED_TIME = datetime(2026, 1, 1, 0, 0, 0)
 
 
+class _FrozenDatetime(datetime):
+    @classmethod
+    def now(cls, tz=None):
+        return _FIXED_TIME.replace(tzinfo=tz)
+
+
+# openpyxl stamps `modified` with the current time on every save.
+_FROZEN_OPENPYXL_CLOCK = SimpleNamespace(datetime=_FrozenDatetime, timezone=timezone)
+
+
 def _insert_text(page: fitz.Page, rect: tuple, text: str) -> None:
     if page.insert_textbox(fitz.Rect(*rect), text, fontname="helv", fontsize=10) < 0:
         raise AssertionError("text does not fit its box")
@@ -176,7 +188,8 @@ def _build_ebom(
         ws.append(values[: len(headers)])
     wb.properties.created = _FIXED_TIME
     wb.properties.modified = _FIXED_TIME
-    wb.save(path)
+    with patch("openpyxl.writer.excel.datetime", _FROZEN_OPENPYXL_CLOCK):
+        wb.save(path)
     return path
 
 
