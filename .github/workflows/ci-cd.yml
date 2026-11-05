@@ -23,12 +23,11 @@ jobs:
     name: 1. Build and test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: pip
 
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install $PYTHON_DEPENDENCIES
@@ -43,12 +42,11 @@ jobs:
     name: 2. Lint and format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: pip
 
       - name: Install ruff
         run: pip install ruff
@@ -63,12 +61,11 @@ jobs:
     name: 3. Vulnerability scans
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: pip
 
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install $PYTHON_DEPENDENCIES
@@ -77,7 +74,7 @@ jobs:
         run: pip install pip-audit && pip-audit
 
       - name: Filesystem scan (Trivy)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: fs
           scan-ref: .
