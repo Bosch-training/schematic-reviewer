@@ -3,6 +3,7 @@
 from dataclasses import dataclass, replace
 from datetime import datetime
 from pathlib import Path
+from unittest.mock import patch
 
 import fitz
 import openpyxl
@@ -176,7 +177,9 @@ def _build_ebom(
         ws.append(values[: len(headers)])
     wb.properties.created = _FIXED_TIME
     wb.properties.modified = _FIXED_TIME
-    wb.save(path)
+    with patch("openpyxl.writer.excel.datetime.datetime") as clock:
+        clock.now.return_value = _FIXED_TIME
+        wb.save(path)
     return path
 
 
