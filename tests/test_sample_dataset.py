@@ -8,7 +8,6 @@ from unittest.mock import patch
 import fitz
 import openpyxl
 import pytest
-
 from sample_dataset import (
     ANNOTATIONS,
     EBOM_HEADERS,
@@ -381,17 +380,21 @@ def test_pdf_builders_raise_assertion_error_when_text_does_not_fit(
     builder, filename, tmp_path
 ):
     """Covers ST-04-UT-016 over the four PDF builders."""
-    with patch.object(fitz.Page, "insert_textbox", return_value=-1):
-        with pytest.raises(AssertionError):
-            builder(tmp_path / filename)
+    with (
+        patch.object(fitz.Page, "insert_textbox", return_value=-1),
+        pytest.raises(AssertionError),
+    ):
+        builder(tmp_path / filename)
 
 
 @pytest.mark.parametrize("builder, filename", _pdf_builder_params("ST-04-UT-017"))
 def test_pdf_builders_propagate_save_error(builder, filename, tmp_path):
     """Covers ST-04-UT-017 over the four PDF builders."""
-    with patch.object(fitz.Document, "save", side_effect=OSError("disk full")):
-        with pytest.raises(OSError, match="disk full"):
-            builder(tmp_path / filename)
+    with (
+        patch.object(fitz.Document, "save", side_effect=OSError("disk full")),
+        pytest.raises(OSError, match="disk full"),
+    ):
+        builder(tmp_path / filename)
 
 
 @pytest.mark.parametrize(
@@ -604,9 +607,11 @@ def test_build_ebom_match_deterministic_cells(tmp_path):
 @pytest.mark.parametrize("builder, filename", _ebom_params("ST-04-UT-041"))
 def test_ebom_builders_propagate_save_error(builder, filename, tmp_path):
     """Covers ST-04-UT-041 over the three EBOM builders."""
-    with patch.object(openpyxl.Workbook, "save", side_effect=OSError("disk full")):
-        with pytest.raises(OSError, match="disk full"):
-            builder(tmp_path / filename)
+    with (
+        patch.object(openpyxl.Workbook, "save", side_effect=OSError("disk full")),
+        pytest.raises(OSError, match="disk full"),
+    ):
+        builder(tmp_path / filename)
 
 
 def test_build_ebom_mismatch_differs_only_by_three_edits(tmp_path):
@@ -819,9 +824,11 @@ def test_build_dataset_deterministic_across_directories(tmp_path):
 
 def test_build_dataset_propagates_builder_error(tmp_path):
     """Covers ST-04-UT-066."""
-    with patch("sample_dataset.build_original_pdf", side_effect=RuntimeError("boom")):
-        with pytest.raises(RuntimeError, match="boom"):
-            build_dataset(tmp_path)
+    with (
+        patch("sample_dataset.build_original_pdf", side_effect=RuntimeError("boom")),
+        pytest.raises(RuntimeError, match="boom"),
+    ):
+        build_dataset(tmp_path)
 
 
 def test_sample_dataset_fixture_creates_all_files(sample_dataset):

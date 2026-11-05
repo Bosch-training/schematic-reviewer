@@ -8,8 +8,6 @@ from collections import Counter
 from pathlib import Path
 
 import pytest
-
-from models import Status
 from sample_dataset import (
     ANNOTATIONS,
     EBOM_HEADERS,
@@ -32,6 +30,8 @@ from sample_dataset import (
     EbomRow,
     SampleDataset,
 )
+
+from models import Status
 
 # Change targets per change request item (LLD 4 and T-13); ref None means no reference.
 # (change id, target reference, target value, target present after change)

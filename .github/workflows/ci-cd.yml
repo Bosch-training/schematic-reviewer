@@ -16,7 +16,7 @@ concurrency:
 
 env:
   PYTHON_VERSION: "3.12"
-  PYTHON_DEPENDENCIES: "fastapi uvicorn pydantic pymupdf openpyxl pytest ruff"
+  PYTHON_DEPENDENCIES: "fastapi uvicorn pydantic pymupdf==1.26.4 openpyxl pytest ruff"
 
 jobs:
   build-test:

@@ -1,6 +1,8 @@
 """Confidentiality-safe logging: only allow-listed fields may be logged."""
 
-ALLOWED_FIELDS: frozenset[str] = frozenset({"review_id", "finding_id", "status", "error_type"})
+ALLOWED_FIELDS: frozenset[str] = frozenset(
+    {"review_id", "finding_id", "status", "error_type"}
+)
 LOGGER_NAME: str = "schematic_review"
 
 

@@ -1,0 +1,2 @@
+# docs/ holds design markdown with illustrative code, not formatted sources.
+extend-exclude = ["docs"]
